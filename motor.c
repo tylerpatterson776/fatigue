@@ -19,12 +19,33 @@
 
 
 static volatile sig_atomic_t stop_now = 0;
-
 static void sigint_handler(int sig)
 {
     (void)sig;        /* silence -Wunused-parameter */
     stop_now = 1;     /* async-signal-safe: just set a flag */
 }
+
+void init(){
+		if (gpioInitialise() < 0) //pigpio init
+	{printf("pigpio initialisation failed \n");}
+	else
+	{printf("pigpio initialisation OK\n");}
+    setbuf(stdout,NULL);
+    int ADC = i2cOpen(1,0x48,0); //handle for the I2C connection to the ADC
+    if (ADC >= 0){ //i2c init
+		printf("I2c open OK \n");
+	}
+	signal(SIGINT, sigint_handler); //signal init, this is responsible for abort_test
+    gpioSetMode(GPIO1, PI_OUTPUT); gpioSetMode(GPIO2, PI_OUTPUT); 
+    gpioSetPWMrange(GPIO1, 255);
+    gpioSetPWMrange(GPIO2, 255);
+    
+    int test = i2cWriteWordData(ADC,0,1);
+    printf("%.4f \n",test);
+	
+	int test2 = i2cReadByteData(ADC,0);
+    printf("%.4f \n",test2);
+	}
 
 float ads1115_read_voltage(int chan)
 { float dummy = 1;
@@ -123,24 +144,7 @@ void fullbeans(int dir){
 
 int main(void)
 {
-	if (gpioInitialise() < 0)
-	{
-		printf("pigpio initialisation failed \n");
-	}
-	else
-	{
-		printf("pigpio initialisation OK\n");
-	}
-    setbuf(stdout,NULL);
-    int ADC = i2cOpen(1,0x48,0); //handle for the I2C connection to the ADC
-    if (ADC >= 0){
-		printf("I2c open OK \n");
-	}
-	signal(SIGINT, sigint_handler);
-    gpioSetMode(GPIO1, PI_OUTPUT); gpioSetMode(GPIO2, PI_OUTPUT);
-    gpioSetPWMrange(GPIO1, 255);
-    gpioSetPWMrange(GPIO2, 255);
-	
+	init();
  
     /* Move to 1.00 V (â4 mm) using PID */
     float pos = 3;
