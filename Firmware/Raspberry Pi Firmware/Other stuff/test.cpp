@@ -102,7 +102,10 @@ void measure(float loadcellReference, int loadcellHandle, float laserReference, 
 		lastPushedTime = time2;	
 	}
 	
-		if (abs(laserSample) >= laserStopDistance) {(stop_now=1);} //this detects if laser has gone out of range
+		if (abs(laserSample) >= laserStopDistance) {
+			printf("Stopping test due to laser leaving bounds of %.4d", laserStopDistance);
+			(stop_now=1);
+			} //this detects if laser has gone out of range
 	}
 	return;
 }
@@ -254,7 +257,6 @@ int main(int argc, char *argv[])
 
 
 int frequency = std::stoi(arg1);
-  
  while(!stop_now){
 
 	if (frequency == 0 ){sleep(1);}
