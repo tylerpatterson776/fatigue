@@ -110,6 +110,9 @@ alignas(64) std::atomic<size_t> m_tail;
 
 typedef RingBuf<Sample, 64>
  AdcBuf;
+ 
+typedef RingBuf<float,4>
+ MiniBuf;
 
 
 
