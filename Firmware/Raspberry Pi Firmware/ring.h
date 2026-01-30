@@ -4,6 +4,9 @@
 #include <optional>
 #include <sstream>
 #include <thread>
+#include <nlohmann/json.hpp>
+#include <string>
+using json = nlohmann::json;
 
 enum class ADC: std::uint16_t
 {
@@ -13,17 +16,17 @@ ADC2,
 
 struct Sample
 {
-ADC adc;
-float value;
-std::uint64_t time_milis;
+std::string packet;
+
 
 [[nodiscard]] std::string to_string() const
 {
 std::stringstream ss;
-ss << (adc == ADC::ADC1 ? "LC" : "LA") << ": " << value << (adc == ADC::ADC1 ? " N " : " mm: ");
-if (adc == ADC::ADC2){ ss << time_milis << " ms\n";}
+ss <<  packet<<"\n";
 return ss.str();
+
 }
+
 };
 
 template<typename T, size_t N>
@@ -33,8 +36,8 @@ public:
 RingBuf() : m_mask(N - 1), m_head(0), m_tail(0)
 {
 static_assert((N & (N - 1)) == 0, "RingBuf size must be a power of 2");
-static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
-static_assert(std::is_trivially_constructible_v<T>, "T must be trivially constructible");
+//static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
+//static_assert(std::is_trivially_constructible_v<T>, "T must be trivially constructible");
 }
 
 void push(const T& value) noexcept
@@ -108,8 +111,12 @@ alignas(64) std::atomic<size_t> m_tail;
 };
 
 
-typedef RingBuf<Sample, 64>
+typedef RingBuf<Sample, 128>
  AdcBuf;
+ 
+ 
+typedef RingBuf<int, 512>
+ Serialbuf;
  
 typedef RingBuf<float,4>
  MiniBuf;
