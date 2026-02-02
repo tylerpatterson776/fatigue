@@ -1514,6 +1514,7 @@
 			)
 			(embedded_fonts no)
 		)
+<<<<<<< HEAD
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -1777,6 +1778,8 @@
 			)
 			(embedded_fonts no)
 		)
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(symbol "power:+3.3V"
 			(power)
 			(pin_numbers
@@ -2159,6 +2162,7 @@
 		(uuid "181abe7a-f941-42b6-bd46-aaa3131f90fb")
 	)
 	(junction
+<<<<<<< HEAD
 		(at 156.21 46.99)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2195,6 +2199,8 @@
 		(uuid "62981b88-535d-4bae-ae7c-8f2740617dcc")
 	)
 	(junction
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(at 58.42 76.2)
 		(diameter 1.016)
 		(color 0 0 0 0)
@@ -2213,18 +2219,22 @@
 		(uuid "8174b4de-74b1-48db-ab8e-c8432251095b")
 	)
 	(junction
+<<<<<<< HEAD
 		(at 180.34 30.48)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "87fe00c6-e905-40cb-9074-d707db7526a4")
 	)
 	(junction
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(at 76.2 68.58)
 		(diameter 1.016)
 		(color 0 0 0 0)
 		(uuid "9340c285-5767-42d5-8b6d-63fe2a40ddf3")
 	)
 	(junction
+<<<<<<< HEAD
 		(at 243.84 46.99)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2237,6 +2247,8 @@
 		(uuid "ae4626cd-486d-43f7-91f8-ef95f344ad46")
 	)
 	(junction
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(at 76.2 63.5)
 		(diameter 1.016)
 		(color 0 0 0 0)
@@ -2370,6 +2382,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 264.16 49.53) (xy 264.16 54.61)
 		)
 		(stroke
@@ -2410,6 +2423,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 76.2 50.8) (xy 76.2 63.5)
 		)
 		(stroke
@@ -2460,6 +2475,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 180.34 30.48) (xy 180.34 31.75)
 		)
 		(stroke
@@ -2500,6 +2516,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 58.42 38.1) (xy 60.96 38.1)
 		)
 		(stroke
@@ -2570,6 +2588,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 195.58 31.75) (xy 195.58 30.48)
 		)
 		(stroke
@@ -2590,6 +2609,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 58.42 58.42) (xy 60.96 58.42)
 		)
 		(stroke
@@ -2600,6 +2621,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 195.58 30.48) (xy 204.47 30.48)
 		)
 		(stroke
@@ -2610,6 +2632,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 73.66 45.72) (xy 100.33 45.72)
 		)
 		(stroke
@@ -2670,6 +2694,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 264.16 46.99) (xy 266.7 46.99)
 		)
 		(stroke
@@ -2680,6 +2705,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 31.75 33.02) (xy 60.96 33.02)
 		)
 		(stroke
@@ -2770,6 +2797,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 264.16 54.61) (xy 254 54.61)
 		)
 		(stroke
@@ -2780,6 +2808,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 76.2 43.18) (xy 76.2 50.8)
 		)
 		(stroke
@@ -2900,6 +2930,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 195.58 30.48) (xy 187.96 30.48)
 		)
 		(stroke
@@ -2920,6 +2951,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 31.75 45.72) (xy 60.96 45.72)
 		)
 		(stroke
@@ -3070,6 +3103,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 204.47 30.48) (xy 204.47 49.53)
 		)
 		(stroke
@@ -3080,6 +3114,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 76.2 33.02) (xy 73.66 33.02)
 		)
 		(stroke
@@ -3100,6 +3136,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 266.7 63.5) (xy 195.58 63.5)
 		)
 		(stroke
@@ -3140,6 +3177,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 76.2 68.58) (xy 76.2 80.01)
 		)
 		(stroke
@@ -3210,6 +3249,7 @@
 	)
 	(wire
 		(pts
+<<<<<<< HEAD
 			(xy 166.37 30.48) (xy 166.37 31.75)
 		)
 		(stroke
@@ -3240,6 +3280,8 @@
 	)
 	(wire
 		(pts
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(xy 60.96 50.8) (xy 31.75 50.8)
 		)
 		(stroke
@@ -3258,6 +3300,7 @@
 		)
 		(uuid "f9e11340-14c0-4808-933b-bc348b73b18e")
 	)
+<<<<<<< HEAD
 	(wire
 		(pts
 			(xy 243.84 54.61) (xy 243.84 49.53)
@@ -3268,6 +3311,8 @@
 		)
 		(uuid "fcfa6fca-9ab0-42e1-8b03-3276bcac4af7")
 	)
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 	(label "ID_SDA"
 		(at 31.75 60.96 0)
 		(effects
@@ -4002,6 +4047,7 @@
 		)
 	)
 	(symbol
+<<<<<<< HEAD
 		(lib_id "Device:C")
 		(at 143.51 45.72 0)
 		(unit 1)
@@ -4950,6 +4996,8 @@
 		)
 	)
 	(symbol
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(lib_id "Analog_ADC:ADS1115IDGS")
 		(at 166.37 44.45 0)
 		(unit 1)
@@ -4957,9 +5005,16 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
+<<<<<<< HEAD
 		(uuid "c2c4e658-e100-4a48-b8f8-a427fe1596b2")
 		(property "Reference" "U1"
 			(at 151.384 30.988 0)
+=======
+		(fields_autoplaced yes)
+		(uuid "c2c4e658-e100-4a48-b8f8-a427fe1596b2")
+		(property "Reference" "U1"
+			(at 168.5133 29.21 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4968,7 +5023,11 @@
 			)
 		)
 		(property "Value" "ADS1115IDGS"
+<<<<<<< HEAD
 			(at 151.13 33.02 0)
+=======
+			(at 168.5133 31.75 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5043,14 +5102,20 @@
 		)
 	)
 	(symbol
+<<<<<<< HEAD
 		(lib_id "Device:R")
 		(at 271.78 35.56 0)
+=======
+		(lib_id "Analog_ADC:ADS1115IDGS")
+		(at 209.55 44.45 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
+<<<<<<< HEAD
 		(uuid "c5bee69d-145d-478c-b99a-70b4390c2a29")
 		(property "Reference" "R5"
 			(at 274.32 34.2899 0)
@@ -5123,6 +5188,11 @@
 		(uuid "c8044f7d-5ab8-44f5-aca1-33d66ff1f5ab")
 		(property "Reference" "U2"
 			(at 236.728 29.464 0)
+=======
+		(uuid "c8044f7d-5ab8-44f5-aca1-33d66ff1f5ab")
+		(property "Reference" "U2"
+			(at 211.6933 29.21 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5131,7 +5201,11 @@
 			)
 		)
 		(property "Value" "ADS1115IDGS"
+<<<<<<< HEAD
 			(at 236.728 32.004 0)
+=======
+			(at 211.6933 31.75 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5140,7 +5214,11 @@
 			)
 		)
 		(property "Footprint" "Package_SO:TSSOP-10_3x3mm_P0.5mm"
+<<<<<<< HEAD
 			(at 254 57.15 0)
+=======
+			(at 209.55 57.15 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5149,7 +5227,11 @@
 			)
 		)
 		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ads1113.pdf"
+<<<<<<< HEAD
 			(at 252.73 67.31 0)
+=======
+			(at 208.28 67.31 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5158,7 +5240,11 @@
 			)
 		)
 		(property "Description" "Ultra-Small, Low-Power, I2C-Compatible, 860-SPS, 16-Bit ADCs With Internal Reference, Oscillator, and Programmable Comparator, VSSOP-10"
+<<<<<<< HEAD
 			(at 254 44.45 0)
+=======
+			(at 209.55 44.45 0)
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5200,6 +5286,7 @@
 			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
 					(reference "U2")
+<<<<<<< HEAD
 					(unit 1)
 				)
 			)
@@ -5266,6 +5353,8 @@
 			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
 					(reference "#PWR07")
+=======
+>>>>>>> 0b2f4aa8d3c74d2a40bbba6ac5d126c05efa0f21
 					(unit 1)
 				)
 			)
