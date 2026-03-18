@@ -44,7 +44,7 @@ using json = nlohmann::json;
 const float lbsPerVolt = 10; //change this is load cell is recalibrated
 const float newtonsPerVolt = 44.48; //change this is load cell is recalibrated
 const float kgPerVolt = 4.535;
-const float mmPerVolt = 4;
+const float mmPerVolt = 1;
 
 std::uint64_t currentTimeMillis();
 
@@ -81,7 +81,7 @@ float laserRefVoltage;
 float voltsToPounds(float input, float reference, float conversionFactor = lbsPerVolt){ float result = (input - reference)*conversionFactor; return result;} //the *2 is to account for the fact we are voltage dividing 
 float voltsToNewtons(float input, float reference, float conversionFactor = newtonsPerVolt){ float result = (input - reference)*conversionFactor; return result;}
 float voltsToKg(float input, float reference, float conversionFactor = kgPerVolt){ float result = (input - reference)*conversionFactor; return result;}
-float voltsToMM(float input, float reference, float conversionFactor = mmPerVolt){ float result = (input)*conversionFactor; return result;}
+float voltsToMM(float input, float reference, float conversionFactor = mmPerVolt){ float result = (input - reference)*conversionFactor; return result;}
 float getSample(int HANDLE);
 
 static volatile sig_atomic_t stop_now = 0;
@@ -358,9 +358,9 @@ printf("Beginning test at %.2d Hz and %.3d PWM \n", frequency, newPWM);
 		}
 	if (frequency != 0){
 
-			gpioHardwarePWM(GPIO1,40000 ,newPWM);
-			gpioWrite(GPIO2, 1);
-			gpioWrite(GPIO3,0);
+			gpioHardwarePWM(GPIO1,40000 ,newPWM); //C
+			gpioWrite(GPIO2, 1); //Ven
+			gpioWrite(GPIO3,0); //D
 			cycleCount += 0.5;
 			//run a thing here that collects until cycle is over
 			usleep(half_us);   
@@ -388,8 +388,13 @@ printf("Beginning test at %.2d Hz and %.3d PWM \n", frequency, newPWM);
 			newPWM = clamp(minNewPWM + round(slope*(feedback - minPWM)),minNewPWM,900000);
 			printf("new PWM: %.2d      error: %.2f  prev error: %.2f   desired Force: %.2f     current Value: %.2f\n",newPWM,error,prev_error,desiredForce,currentValue);
 			prev_error = error;
+			
+			
+			
+			
+			
 			gpioWrite(GPIO1,0);
-			gpioWrite(GPIO2, 0);
+			gpioWrite(GPIO2, 1);
 			gpioWrite(GPIO3,0);
 			cycleCount += 0.5;
 			usleep(half_us);        
