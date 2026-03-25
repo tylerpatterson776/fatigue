@@ -58,16 +58,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        [
-          "malformed_courtyard|180650000|74005000|881b26b7-c4f4-4e57-a1eb-157542b19879|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "malformed_courtyard|181300000|73975000|881b26b7-c4f4-4e57-a1eb-157542b19879|00000000-0000-0000-0000-000000000000",
-          ""
-        ]
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -196,7 +187,11 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -642,6 +637,22 @@
     [
       "ae8ed997-0405-4e53-9dcd-5fbaac7a4be9",
       "Root"
+    ],
+    [
+      "672585e9-b98a-4d84-9ff0-df59e4171659",
+      "Conditioner1"
+    ],
+    [
+      "17d08d36-ccdc-4d7b-b166-df93ddb708a8",
+      "ADC2"
+    ],
+    [
+      "2982ded0-7976-422b-b816-de870d965249",
+      "Conditioner2"
+    ],
+    [
+      "fd2f6adf-5a19-43c1-b198-86f54d77d613",
+      "ADC1"
     ]
   ],
   "text_variables": {}
