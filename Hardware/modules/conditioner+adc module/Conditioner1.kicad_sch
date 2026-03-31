@@ -1152,6 +1152,12 @@
 		(uuid "2c47364b-547f-44ab-84b2-46f43a28b35d")
 	)
 	(junction
+		(at 120.65 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4e80dc90-92d0-41d7-b644-384947489471")
+	)
+	(junction
 		(at 82.55 46.99)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1162,6 +1168,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "82915103-73c8-4859-9de0-f2c9267f790a")
+	)
+	(junction
+		(at 52.07 27.94)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "89808e2a-4419-4008-8258-22da8f54e8b1")
 	)
 	(junction
 		(at 104.14 31.75)
@@ -1198,6 +1210,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "de25da33-7c01-4b3a-a2e6-8a8ca7fef675")
+	)
+	(junction
+		(at 50.8 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "de4cade2-9daf-4171-9bc2-5e0848ea01bd")
 	)
 	(junction
 		(at 52.07 36.83)
@@ -1253,6 +1271,26 @@
 	)
 	(wire
 		(pts
+			(xy 45.72 24.13) (xy 45.72 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1c747fc7-8561-4cb0-97ab-cbfc28aa26f3")
+	)
+	(wire
+		(pts
+			(xy 50.8 45.72) (xy 52.07 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1db51f37-fbc6-41b1-a056-14eac1e8256c")
+	)
+	(wire
+		(pts
 			(xy 45.72 27.94) (xy 52.07 27.94)
 		)
 		(stroke
@@ -1270,6 +1308,16 @@
 			(type default)
 		)
 		(uuid "328a2b8b-3a99-45cf-9974-a7b109caf864")
+	)
+	(wire
+		(pts
+			(xy 52.07 20.32) (xy 53.34 20.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4646dbe6-06b9-41ff-86c8-564b42aaead7")
 	)
 	(wire
 		(pts
@@ -1343,7 +1391,7 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 45.72) (xy 52.07 45.72)
+			(xy 45.72 45.72) (xy 50.8 45.72)
 		)
 		(stroke
 			(width 0)
@@ -1393,6 +1441,16 @@
 	)
 	(wire
 		(pts
+			(xy 120.65 54.61) (xy 127 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ee408cb-121e-4378-95c6-60abf782c871")
+	)
+	(wire
+		(pts
 			(xy 104.14 19.05) (xy 104.14 31.75)
 		)
 		(stroke
@@ -1433,6 +1491,16 @@
 	)
 	(wire
 		(pts
+			(xy 50.8 45.72) (xy 50.8 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b680d9a-6978-4a79-b62d-c36e543ac52c")
+	)
+	(wire
+		(pts
 			(xy 72.39 31.75) (xy 82.55 31.75)
 		)
 		(stroke
@@ -1460,6 +1528,16 @@
 			(type default)
 		)
 		(uuid "8ac1fc16-37cb-46ac-b56c-467647b9610e")
+	)
+	(wire
+		(pts
+			(xy 52.07 27.94) (xy 52.07 20.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cc53f94-b500-4b55-af59-5a5154b50ae5")
 	)
 	(wire
 		(pts
@@ -1523,7 +1601,7 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 45.72) (xy 45.72 48.26)
+			(xy 45.72 45.72) (xy 45.72 53.34)
 		)
 		(stroke
 			(width 0)
@@ -1632,16 +1710,6 @@
 		(uuid "fefd8826-86e9-4929-a099-9b5c4c1fd7d2")
 	)
 	(label "+In_D"
-		(at 87.63 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "026c9715-5b90-40ee-8418-2b9ce65df350")
-	)
-	(label "+In_D"
 		(at 105.41 36.83 0)
 		(effects
 			(font
@@ -1649,18 +1717,50 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "99596fc4-869f-4f12-a99c-3989c02a2348")
+		(uuid "2b1e97e0-08e5-4167-9c15-a41869f67ab9")
 	)
-	(hierarchical_label "Output"
+	(label "+In_D"
+		(at 87.63 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cded5177-5192-4b58-aee5-91edf85afdff")
+	)
+	(hierarchical_label "+2.5V"
 		(shape input)
-		(at 104.14 19.05 0)
+		(at 127 54.61 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "7b7ae16d-06be-4e21-b41c-3ec1a4b56c5f")
+		(uuid "3b883784-5a3f-431d-9731-f65fd1d05477")
+	)
+	(hierarchical_label "-12V"
+		(shape input)
+		(at 50.8 53.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6e263117-5507-4382-b0ab-315b3ec7a559")
+	)
+	(hierarchical_label "+12V"
+		(shape input)
+		(at 53.34 20.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "70c06a69-573a-405a-aab9-a2bdd57d40ce")
 	)
 	(hierarchical_label "Input"
 		(shape input)
@@ -1671,7 +1771,18 @@
 			)
 			(justify left)
 		)
-		(uuid "e0ed3f18-51c3-43d1-ae7b-a0e45992df44")
+		(uuid "d68be2be-f405-408c-827c-0292300cf8be")
+	)
+	(hierarchical_label "Output"
+		(shape input)
+		(at 104.14 19.05 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f722bd5b-cbc2-450b-a05c-a7c9767eb3e3")
 	)
 	(symbol
 		(lib_id "power:GNDA")
@@ -1682,7 +1793,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "01c5cbe8-9fea-4f7c-b8e7-baf3e062ef78")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR013"
 			(at 66.04 38.1 0)
 			(effects
 				(font
@@ -1731,86 +1842,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR035")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR05")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 64.77 53.34 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "02b57934-f947-4cf2-8560-5be408afb0c9")
-		(property "Reference" "R4"
-			(at 67.31 52.0699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "3400"
-			(at 67.31 54.6099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
-			(at 66.548 53.34 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 64.77 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 64.77 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3d53636d-867e-433d-bfc4-fdd7f8ff9273")
-		)
-		(pin "2"
-			(uuid "9c304b25-fb61-4251-9b42-ca7db3a47cfa")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R5")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R4")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -1818,16 +1851,16 @@
 	)
 	(symbol
 		(lib_id "power:GNDA")
-		(at 64.77 58.42 0)
+		(at 119.38 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "0fd2bd72-0780-452b-8485-9fabb339f664")
-		(property "Reference" "#PWR04"
-			(at 64.77 64.77 0)
+		(uuid "162798d4-e4eb-4cec-885b-f03db5e055dd")
+		(property "Reference" "#PWR018"
+			(at 119.38 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1836,7 +1869,7 @@
 			)
 		)
 		(property "Value" "AGND"
-			(at 64.77 63.5 0)
+			(at 119.38 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1844,7 +1877,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 64.77 58.42 0)
+			(at 119.38 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1853,7 +1886,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 64.77 58.42 0)
+			(at 119.38 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1862,7 +1895,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
-			(at 64.77 58.42 0)
+			(at 119.38 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1871,162 +1904,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "3e8e0c58-6564-417e-8b48-5042cbf35653")
+			(uuid "25ef5970-1a76-49b9-bcbc-8a197bca0bb0")
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR034")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 64.77 44.45 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "196c16e3-c857-41cf-a5ec-c408918fddd6")
-		(property "Reference" "R3"
-			(at 67.31 43.1799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10.2k"
-			(at 67.31 45.7199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
-			(at 66.548 44.45 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 64.77 44.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 64.77 44.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f13e1dc9-632b-4d03-a16d-49b3ba79dc51")
-		)
-		(pin "2"
-			(uuid "1d7c229e-38c0-4f03-a762-8aa8419d4079")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R34")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 107.95 31.75 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1e1b0a15-1a42-49b2-983a-788dd3b43754")
-		(property "Reference" "R8"
-			(at 107.95 25.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 107.95 27.94 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 107.95 33.528 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 107.95 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 107.95 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "59a98b91-d00e-4294-8d16-e0be55d55083")
-		)
-		(pin "2"
-			(uuid "9609109f-45e6-44f0-bf7f-3f59a715737f")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R39")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R8")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -2034,7 +1917,7 @@
 	)
 	(symbol
 		(lib_id "power:-12V")
-		(at 45.72 48.26 180)
+		(at 45.72 53.34 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2042,8 +1925,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1ece2c09-8405-4d95-a991-658e4d5f1fe1")
-		(property "Reference" "#PWR03"
-			(at 45.72 44.45 0)
+		(property "Reference" "#PWR011"
+			(at 45.72 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2052,7 +1935,7 @@
 			)
 		)
 		(property "Value" "-12V"
-			(at 45.72 53.34 0)
+			(at 45.72 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2060,7 +1943,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 45.72 48.26 0)
+			(at 45.72 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2069,7 +1952,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 45.72 48.26 0)
+			(at 45.72 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2078,7 +1961,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"-12V\""
-			(at 45.72 48.26 0)
+			(at 45.72 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2091,12 +1974,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR033")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR03")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -2165,10 +2044,6 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R32")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "R1")
 					(unit 1)
@@ -2185,7 +2060,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "279e8d34-37ae-4e07-840a-b02114ccf2a9")
-		(property "Reference" "R9"
+		(property "Reference" "R8"
 			(at 111.76 46.9899 0)
 			(effects
 				(font
@@ -2238,160 +2113,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R40")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 82.55 63.5 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2834048f-09cb-401b-b46c-19dff1963878")
-		(property "Reference" "R7"
-			(at 85.09 62.2299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10k"
-			(at 85.09 64.7699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 84.328 63.5 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 82.55 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 82.55 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8d4738f0-3503-47ec-bec0-3fd30c5ce9a2")
-		)
-		(pin "2"
-			(uuid "462cc17d-7c7d-4713-b042-7c74ca96f612")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R38")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 82.55 53.34 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "28b4c212-c704-4f0e-8dff-d8fb9690bc59")
-		(property "Reference" "R6"
-			(at 85.09 52.0699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10k"
-			(at 85.09 54.6099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 84.328 53.34 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 82.55 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 82.55 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "705fe88d-8eb0-4ee8-bc8c-0af226965d79")
-		)
-		(pin "2"
-			(uuid "24a3a918-a70f-46eb-a705-81d060b16361")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R37")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R6")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -2460,10 +2183,6 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "C9")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "C2")
 					(unit 1)
@@ -2481,7 +2200,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "47f8e4ce-20ca-459b-91c7-a23a14d2f7ec")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR017"
 			(at 109.22 68.58 0)
 			(effects
 				(font
@@ -2530,12 +2249,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR039")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR09")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -2551,7 +2266,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4a20c262-9454-4306-ade4-e8782d6f16cd")
-		(property "Reference" "#PWR01"
+		(property "Reference" "#PWR09"
 			(at 31.75 44.45 0)
 			(effects
 				(font
@@ -2600,12 +2315,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR031")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR01")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -2621,7 +2332,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "62293478-ce4f-4092-a468-495a945250b8")
-		(property "Reference" "R10"
+		(property "Reference" "R9"
 			(at 111.76 57.1499 0)
 			(effects
 				(font
@@ -2674,12 +2385,78 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R41")
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "R9")
 					(unit 1)
 				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 64.77 44.45 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "630b2c63-0dc7-4157-a2bb-1f9ab49a5d7b")
+		(property "Reference" "R3"
+			(at 67.31 43.1799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "10.2k"
+			(at 67.31 45.7199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 66.548 44.45 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 64.77 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f13e1dc9-632b-4d03-a16d-49b3ba79dc51")
+		)
+		(pin "2"
+			(uuid "1d7c229e-38c0-4f03-a762-8aa8419d4079")
+		)
+		(instances
+			(project "conditioner+adc"
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R10")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -2748,10 +2525,6 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "C8")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "C1")
 					(unit 1)
@@ -2819,10 +2592,6 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "TP6")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "TP2")
 					(unit 1)
@@ -2831,35 +2600,35 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 55.88 49.53 0)
+		(lib_id "Device:R")
+		(at 64.77 53.34 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "78e910dd-278e-4523-9090-e36326b4018d")
-		(property "Reference" "TP1"
-			(at 57.658 46.228 0)
+		(fields_autoplaced yes)
+		(uuid "7c0c5b28-929b-4bcc-a416-5c7fa7af3fea")
+		(property "Reference" "R4"
+			(at 67.31 52.0699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Value" "TestPoint"
-			(at 58.42 47.4979 0)
+		(property "Value" "3400"
+			(at 67.31 54.6099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
-				(hide yes)
+				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
-			(at 60.96 49.53 0)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 66.548 53.34 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2868,7 +2637,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 60.96 49.53 0)
+			(at 64.77 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2876,78 +2645,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "test point"
-			(at 55.88 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fd55aeea-cac9-4911-b043-35af8ba9ac79")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "TP5")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "TP1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDA")
-		(at 119.38 33.02 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8a1736f5-4bcc-4fdc-b1ac-4b035d1dbce5")
-		(property "Reference" "#PWR010"
-			(at 119.38 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "AGND"
-			(at 119.38 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 119.38 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 119.38 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
-			(at 119.38 33.02 0)
+		(property "Description" "Resistor"
+			(at 64.77 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2956,86 +2655,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "25ef5970-1a76-49b9-bcbc-8a197bca0bb0")
+			(uuid "3d53636d-867e-433d-bfc4-fdd7f8ff9273")
+		)
+		(pin "2"
+			(uuid "9c304b25-fb61-4251-9b42-ca7db3a47cfa")
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR040")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 45.72 27.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8b1044da-8af0-4582-9758-149f0a6e8fd7")
-		(property "Reference" "#PWR02"
-			(at 45.72 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 45.72 22.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 45.72 27.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 45.72 27.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 45.72 27.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8597e9f1-5a9a-487c-8ff0-d284240de783")
-		)
-		(instances
-			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR032")
-					(unit 1)
-				)
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR02")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -3049,7 +2677,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "8f68a4f8-7d66-40e6-a5f6-aaeb0a630d52")
+		(uuid "7e398965-a748-4b7d-820e-36fbbff8c612")
 		(property "Reference" "U1"
 			(at 86.868 26.924 0)
 			(effects
@@ -3137,12 +2765,212 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "U4")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 107.95 31.75 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8231f9b2-da07-4367-b99d-10355b5b2b7d")
+		(property "Reference" "R7"
+			(at 107.95 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 107.95 27.94 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 107.95 33.528 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 107.95 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 107.95 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "59a98b91-d00e-4294-8d16-e0be55d55083")
+		)
+		(pin "2"
+			(uuid "9609109f-45e6-44f0-bf7f-3f59a715737f")
+		)
+		(instances
+			(project "conditioner+adc"
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 45.72 24.13 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8b1044da-8af0-4582-9758-149f0a6e8fd7")
+		(property "Reference" "#PWR010"
+			(at 45.72 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 45.72 19.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 45.72 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 45.72 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+12V\""
+			(at 45.72 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8597e9f1-5a9a-487c-8ff0-d284240de783")
+		)
+		(instances
+			(project "conditioner+adc"
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "#PWR010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 82.55 53.34 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "aba4bafb-94be-418f-8672-09a6e49730f4")
+		(property "Reference" "R5"
+			(at 85.09 52.0699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "10k"
+			(at 85.09 54.6099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 84.328 53.34 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 82.55 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 82.55 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "705fe88d-8eb0-4ee8-bc8c-0af226965d79")
+		)
+		(pin "2"
+			(uuid "24a3a918-a70f-46eb-a705-81d060b16361")
+		)
+		(instances
+			(project "conditioner+adc"
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -3157,8 +2985,8 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "c086e6f8-15a8-45d3-9a34-0c1cb1822509")
-		(property "Reference" "R13"
+		(uuid "b3805d6f-3981-45fa-9557-8414f309a46c")
+		(property "Reference" "R10"
 			(at 115.57 25.4 90)
 			(effects
 				(font
@@ -3209,29 +3037,43 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R44")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "R13")
+					(reference "R10")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:GNDA")
-		(at 133.35 67.31 0)
+		(lib_id "Connector:TestPoint")
+		(at 55.88 49.53 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d57a60fd-73ec-429a-82fd-2d459e762f79")
-		(property "Reference" "#PWR025"
-			(at 133.35 73.66 0)
+		(uuid "c4bcfba2-2351-4205-8c45-5ec6a6360826")
+		(property "Reference" "TP1"
+			(at 57.658 46.228 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 58.42 47.4979 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
+			(at 60.96 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3239,16 +3081,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "AGND"
-			(at 133.35 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 133.35 67.31 0)
+		(property "Datasheet" "~"
+			(at 60.96 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3256,17 +3090,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 133.35 67.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
-			(at 133.35 67.31 0)
+		(property "Description" "test point"
+			(at 55.88 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3275,16 +3100,82 @@
 			)
 		)
 		(pin "1"
-			(uuid "fc0410a9-4447-4a6d-92c1-294fb4ebfe18")
+			(uuid "fd55aeea-cac9-4911-b043-35af8ba9ac79")
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR027")
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "TP1")
 					(unit 1)
 				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 82.55 63.5 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dc376dbd-81e2-4a6d-a338-c6bbc32822db")
+		(property "Reference" "R6"
+			(at 85.09 62.2299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "10k"
+			(at 85.09 64.7699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 84.328 63.5 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 82.55 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 82.55 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8d4738f0-3503-47ec-bec0-3fd30c5ce9a2")
+		)
+		(pin "2"
+			(uuid "462cc17d-7c7d-4713-b042-7c74ca96f612")
+		)
+		(instances
+			(project "conditioner+adc"
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR025")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -3353,10 +3244,6 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "R33")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
 					(reference "R2")
 					(unit 1)
@@ -3374,7 +3261,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e84ce5a2-f0fd-449f-8969-5ea5b315c47e")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR014"
 			(at 86.36 39.37 0)
 			(effects
 				(font
@@ -3424,12 +3311,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR036")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR06")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -3445,7 +3328,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "efe6b16c-04b6-4f85-96e6-ac4352eb0894")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR015"
 			(at 100.33 39.37 0)
 			(effects
 				(font
@@ -3495,12 +3378,8 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR037")
-					(unit 1)
-				)
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR07")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -3515,7 +3394,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f615c39d-5d0c-4c1a-b2a7-71abecfddb06")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR016"
 			(at 109.22 48.26 0)
 			(effects
 				(font
@@ -3564,12 +3443,74 @@
 		)
 		(instances
 			(project "conditioner+adc"
-				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/2982ded0-7976-422b-b816-de870d965249"
-					(reference "#PWR038")
+				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
+					(reference "#PWR016")
 					(unit 1)
 				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GNDA")
+		(at 64.77 58.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f65dbad3-b511-4f17-a330-325187fa52a3")
+		(property "Reference" "#PWR012"
+			(at 64.77 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "AGND"
+			(at 64.77 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 64.77 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 64.77 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
+			(at 64.77 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3e8e0c58-6564-417e-8b48-5042cbf35653")
+		)
+		(instances
+			(project "conditioner+adc"
 				(path "/ae8ed997-0405-4e53-9dcd-5fbaac7a4be9/672585e9-b98a-4d84-9ff0-df59e4171659"
-					(reference "#PWR08")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
