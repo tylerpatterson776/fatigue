@@ -1,0 +1,8 @@
+{
+  "version-string": "0.1.0",
+  "name": "fatigue",
+  "dependencies": [
+    "spdlog",
+    "nlohmann-json"
+  ]
+}
