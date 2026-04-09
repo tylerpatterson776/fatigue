@@ -3,6 +3,7 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 #include <utility>
 
 #include "Sample.h"
@@ -48,7 +49,11 @@ private:
 
     void open()
     {
-        m_file.setFileName(m_filename);
+        if (!QDir().mkpath("logs"))
+        {
+            throw std::runtime_error("Could not create logs directory");
+        }
+        m_file.setFileName("logs/" + m_filename);
         m_file.open(QIODevice::WriteOnly);
         if (!m_file.isOpen()) return;
         m_stream.setDevice(&m_file);

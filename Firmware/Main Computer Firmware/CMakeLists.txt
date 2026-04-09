@@ -27,3 +27,12 @@ target_link_libraries(fatigue PRIVATE
     nlohmann_json::nlohmann_json
     Qt6::Core Qt6::Gui Qt6::Widgets Qt6::SerialPort Qt6::Charts
 )
+
+if(WIN32)
+    add_custom_command(TARGET fatigue POST_BUILD
+        COMMAND "${Qt6_DIR}/../../../bin/windeployqt.exe"
+                --release
+                "$<TARGET_FILE:fatigue>"
+        COMMENT "Running windeployqt..."
+    )
+endif()

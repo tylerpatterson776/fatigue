@@ -75,6 +75,7 @@ QChartView* MainWindow::makeChart(const QString& title, const QString& yLabel,
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
+    series->setUseOpenGL(true);
     auto* view = new QChartView(chart);
     view->setRenderHint(QPainter::Antialiasing);
     return view;
@@ -106,6 +107,7 @@ void MainWindow::construct_ui()
     bar->addWidget(m_connectBtn);
 
     m_logBtn = new QPushButton("Start Log");
+    m_logBtn->setFixedWidth(100);
     connect(m_logBtn, &QPushButton::clicked, this, &MainWindow::onLogToggled);
     bar->addWidget(m_logBtn);
     bar->addStretch();
@@ -209,8 +211,8 @@ void MainWindow::onSample(Sample s)
         return;
     }
 
-    constexpr double kLoadThresh = 1.0;   // N
-    constexpr double kDistThresh = 0.001;  // mm
+    constexpr double kLoadThresh = 0.5;   // N
+    constexpr double kDistThresh = 0.0001;  // mm
 
     const bool loadChanged = std::isnan(m_lastLoad) || std::abs(s.load_n      - m_lastLoad) > kLoadThresh;
     const bool distChanged = std::isnan(m_lastDist) || std::abs(s.distance_mm - m_lastDist) > kDistThresh;
@@ -220,10 +222,10 @@ void MainWindow::onSample(Sample s)
     if (distChanged) { m_distSeries->append(x, s.distance_mm); m_lastDist = s.distance_mm; }
 
     auto scaleY = [](const QLineSeries* ser, QValueAxis* axis, const double marginFactor) {
-        const auto pts = ser->points();
-        if (pts.isEmpty()) return;
-        double lo = pts[0].y(), hi = pts[0].y();
-        for (const auto& p : pts) {
+        if (ser->count() == 0) return;
+        double lo = std::numeric_limits<double>::max(), hi = -std::numeric_limits<double>::max();
+        for (int i = 0; i < ser->count(); ++i) {
+            const QPointF p = ser->at(i);
             lo = std::min(lo, p.y());
             hi = std::max(hi, p.y());
         }
