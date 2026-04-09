@@ -13,6 +13,7 @@ set(SOURCES
     src/SerialWorker.h
     src/Sample.cpp
     src/Sample.h
+    src/SampleSink.h
 )
 
 find_package(nlohmann_json CONFIG REQUIRED)

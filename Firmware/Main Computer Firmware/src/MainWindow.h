@@ -1,10 +1,13 @@
 #pragma once
 
+#include <limits>
 #include <QMainWindow>
 #include <QtCharts/QChartView>
+#include <QTimer>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include "Sample.h"
+#include "SampleSink.h"
 
 class QComboBox;
 class QPushButton;
@@ -25,6 +28,8 @@ private slots:
     void onConnectionChanged(bool connected);
     void onWorkerError(const QString& msg);
     void refreshPorts();
+    void onLogToggled();
+    void onLogTimer() const;
 
 private:
     void        construct_ui();
@@ -33,9 +38,15 @@ private:
 
     static MainWindow* m_instance;
 
+    // Logging
+    QTimer m_logTimer;
+    std::vector<std::unique_ptr<SampleSink>> m_sinks;
+
     // Toolbar
     QComboBox*   m_portCombo  = nullptr;
     QPushButton* m_connectBtn = nullptr;
+    QPushButton* m_logBtn     = nullptr;
+    bool         m_logging    = false;
 
     // Load chart
     QLineSeries* m_loadSeries = nullptr;
@@ -51,5 +62,7 @@ private:
     SerialWorker* m_worker    = nullptr;
     bool          m_connected = false;
 
-    double m_t0 = -1.0;  // time of first sample in seconds
+    double m_t0       = -1.0;
+    double m_lastLoad = std::numeric_limits<double>::quiet_NaN();
+    double m_lastDist = std::numeric_limits<double>::quiet_NaN();
 };

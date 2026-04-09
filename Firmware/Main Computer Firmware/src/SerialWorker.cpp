@@ -1,5 +1,7 @@
 #include "SerialWorker.h"
 
+#include <spdlog/spdlog.h>
+
 SerialWorker::SerialWorker(QObject* parent) : QObject(parent) {}
 
 SerialWorker::~SerialWorker() { close(); }
@@ -48,6 +50,7 @@ void SerialWorker::onReadyRead()
     int idx;
     while ((idx = m_lineBuf.indexOf('\n')) != -1) {
         const QByteArray line = m_lineBuf.left(idx).trimmed();
+        // spdlog::info("Received line: {}", line.constData());
         m_lineBuf.remove(0, idx + 1);
         if (line.isEmpty()) continue;
         if (auto s = Sample::parse(line.toStdString()))
