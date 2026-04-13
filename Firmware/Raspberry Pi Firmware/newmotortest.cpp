@@ -1,4 +1,3 @@
-
 #include <pigpio.h>
 #include <nlohmann/json.hpp>
 #include <stdio.h>
@@ -35,6 +34,7 @@
 #include <thread>
 #include "ring.h"
 #include <cassert>
+#include <atomic>
 
 using json = nlohmann::json;
 
@@ -43,13 +43,24 @@ using json = nlohmann::json;
 #define GPIO3 22
 #define GPIO4 23
 
-const float lbsPerVolt = 10; //change this is load cell is recalibrated
-const float newtonsPerVolt = 44.48; //change this is load cell is recalibrated
-const float kgPerVolt = 4.535;
-const float mmPerVolt = 1;
+const double lbsPerVolt = 10; //change this is load cell is recalibrated
+const double newtonsPerVolt = 44.48; //change this is load cell is recalibrated
+const double kgPerVolt = 4.535;
+const double mmPerVolt = 1;
 
 std::uint64_t currentTimeMillis();
 
+double P = 0;
+double I = 0;
+double D = 0;
+
+double Pgain;
+double Igain;
+double Dgain;
+double setpoint;
+double cycleCount;
+
+int laserTrips = 0;
 
 const int LOADCELL_ADS1115_ADDRESS=0x48;
 const int LASER_ADS1115_ADDRESS=0x4b;
@@ -57,58 +68,57 @@ int LOADCELL_ADS1115_HANDLE;
 int LASER_ADS1115_HANDLE;
 
 bool doLoadcellAveraging = 1;
-bool doLaserAveraging = 0;
+bool doLaserAveraging = 1;
 int doCycleWriting;
-std::vector<float> currentLoadCellCycle;
-std::vector<float> currentLaserCycle;
-float vRef = 5.0;
+std::vector<double> currentLoadCellCycle;
+std::vector<double> currentLaserCycle;
+double vRef = 5.0;
 int   gain = 0;
 int serial;
 
   
-const int laserStopDistance = 5;  //the test immediately stops if the laser reads this distance from where the test started (in mm)
+const int laserStopDistance = 3;  //the test immediately stops if the laser reads this distance from where the test started (in mm)
 const int minFrequency = 0;const int maxFrequency = 50;
 long long sample=-1;
 long long sampleStart=0;
 long long lastSampleTimestamp=0;
-float seconds = 1;
-float loadcellRefVoltage;
-float laserRefVoltage;
+double seconds = 1;
+double loadcellRefVoltage;
+double laserRefVoltage;
 
 
-float voltsToPounds(float input, float reference, float conversionFactor = lbsPerVolt){ float result = (input - reference)*conversionFactor; return result;} //the *2 is to account for the fact we are voltage dividing 
-float voltsToNewtons(float input, float reference, float conversionFactor = newtonsPerVolt){ float result = -((input - reference)*conversionFactor); return result;}
-float voltsToKg(float input, float reference, float conversionFactor = kgPerVolt){ float result = (input - reference)*conversionFactor; return result;}
-float voltsToMM(float input, float reference, float conversionFactor = mmPerVolt){ float result = (input - reference)*conversionFactor; return result;}
-float getSample(int HANDLE);
-
-static volatile sig_atomic_t stop_now = 0;
 
 
-float get_vector_average(const std::vector <float> &ptr){
-	float sum = 0;
+
+double getSample(int HANDLE);
+
+static sig_atomic_t stop_now = 0;
+
+
+double get_vector_average(const std::vector <double> &ptr){
+	double sum = 0;
 	for (long unsigned int i=0; i < ptr.size(); i++){
 		sum = sum + ptr.at(i);
 	}
-	float average = sum/ptr.size();
+	double average = sum/ptr.size();
 	return average;
 }
 
 
-float get_vector_median(std::vector <float> &ptr){
+double get_vector_median(std::vector <double> &ptr){
 	size_t n = ptr.size()/2;
 	std::nth_element(ptr.begin(),ptr.begin()+n,ptr.end());
 	return ptr[n];
 	
 }
 
-float get_vector_max(std::vector <float> &ptr){
-	float max = *std::max_element(ptr.begin(), ptr.end());
+double get_vector_max(std::vector <double> &ptr){
+	double max = *std::max_element(ptr.begin(), ptr.end());
 	return max;
 }
 
-float get_vector_min(std::vector <float> &ptr){
-	float max = *std::min_element(ptr.begin(), ptr.end());
+double get_vector_min(std::vector <double> &ptr){
+	double max = *std::min_element(ptr.begin(), ptr.end());
 	return max;
 }
 
@@ -132,7 +142,7 @@ static void sigint_handler(int sig)
     stop_now = 1;     /* async-signal-safe: just set a flag */
 }
 
-void measure(float loadcellReference, int loadcellHandle, float laserReference, int laserHandle, AdcBuf &buf, int doCycleWriting, std::vector<float> &currentLoadCellCycle,std::vector <float> &currentLaserCycle, float &cycleCount)
+void measure(double loadcellReference, int loadcellHandle, double laserReference, int laserHandle, AdcBuf &buf, int doCycleWriting, std::vector<double> &currentLoadCellCycle,std::vector <double> &currentLaserCycle, double &cycleCount, double loadcellOffset, double laserOffset)
 {
 	std::uint64_t lastPushedTime = 0;
 	std::uint64_t sampleStart = currentTimeMillis(); //time when measuring began
@@ -140,19 +150,20 @@ void measure(float loadcellReference, int loadcellHandle, float laserReference, 
 			
 		std::uint64_t time = currentTimeMillis(); //time when we are taking the measurement
 		std::uint64_t time2 = (time - sampleStart); 
-		double loadcellSample = voltsToNewtons(getSample(loadcellHandle),loadcellReference);
-		double laserSample = voltsToMM(getSample(laserHandle),laserReference);
-		loadcellSample = std::round(loadcellSample * 1000.0)/1000.0;
-		laserSample = std::round(laserSample * 1000.0)/1000.0;
+		double loadcellSample = getSample(loadcellHandle) + loadcellOffset;
+		loadcellSample = ((loadcellSample*4) - 10)*2.5*4.448;
+		double laserSample = getSample(laserHandle) + laserOffset;
+		laserSample = ((laserSample*4) - 10);
+		//loadcellSample = std::round(loadcellSample * 1000.0)/1000.0;
+		//laserSample = std::round(laserSample * 1000.0)/1000.0;
 		
 		if (time2 != lastPushedTime){ //samples are only pushed to buffer if timestamp has changed to avoid duplicates 
-			json packet = {
-			{"Data",{"Timestamp", time2},
-					{"Cycle #", cycleCount},
-					{"Load",loadcellSample},
-					{"Distance" , laserSample},
-			}
-			};
+			json packet;
+			
+			packet["Data"]["Timestamp"] = time2;
+			packet["Data"]["Cycle #"] = cycleCount;
+			packet["Data"]["Load"] = loadcellSample;
+			packet["Data"]["Distance"] = laserSample;
 			
 			std::string s = packet.dump();
 			buf.push({s});
@@ -162,7 +173,12 @@ void measure(float loadcellReference, int loadcellHandle, float laserReference, 
 	}
 	
 		if (abs(laserSample) >= laserStopDistance) {
-			printf("Stopping test due to laser leaving bounds of %.4d, distance causing trip was %.4f mm ", laserStopDistance, laserSample); (stop_now=1);} //this detects if laser has gone out of range
+			laserTrips += 1;
+			printf("Laser tripped, distance was %.2f, trip count is %.1d\n", laserSample, laserTrips);
+			if (laserTrips >= 3){
+			printf("Stopping test due to laser leaving bounds of %.4d, distance causing trip was %.4f mm \n", laserStopDistance, laserSample);
+			 (stop_now=1);
+			}} else {laserTrips = 0;} 
 	}
 	return;
 }
@@ -191,8 +207,61 @@ void receive(Serialbuf &receivebuffer, int &serialobj){
 	return;
 }
 
+double clamp(double v, double lo, double hi){
+	if (v>hi){
+		v = hi;
+		return v;
+		}
+	if (v<lo){
+		v=lo;
+		return v;
+	}
+	return v;
+	
+}
+
+/*
+void calculatePID(std::vector <double> &currentLoadCellCycle){//this is going to run constantly
+	double prevtime = 0;
+	double time = 0;
+	double feedback;
+	double prev_error = 0;
+	
+	while (!stop_now){
+			time = currentTimeMillis();
+			double dt = currentTimeMillis() - prevtime;
+			prevtime = currentTimeMillis();
+			
+			//printf("Cycle # %.f   LOAD CELL: Median of cycle: %.2f N   Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.f \n",cycleCount,get_vector_median(currentLoadCellCycle),get_vector_max(currentLoadCellCycle),get_vector_min(currentLoadCellCycle),newPWM); 
+			//printf("LASER: Median of cycle: %.2f    Max of cycle:%.2f  Min of cycle:%.2f",get_vector_median(currentLaserCycle),get_vector_max(currentLaserCycle),get_vector_min(currentLaserCycle)); 
+			//printf("time: %.2f\n", time-sampleStart);
+			
+			double currentValue = get_vector_max(currentLoadCellCycle); //this is the control variable, the median force over the current cycle
+			double error = setpoint - currentValue;
+			
+			 P.store(error*Pgain,std::memory_order_relaxed);
+			if (cycleCount > 3) {
+				 D = (((error - prev_error)/dt)*Dgain);
 
 
+
+
+
+				 I += (error*dt*0.01);
+			}
+			
+			
+			feedback =   clamp(P + D + I*Igain, setpoint, 550);
+			//double feedbacknoclamp = (P + D + I*Igain); //this is what the feedback value would be without clamping. just to see
+			//printf("Feedback : %.3f, Feedback without clamping: %.4f, P: %.2f,  D: %.2f,  Iout:%.2f\n", feedback,feedbacknoclamp, P,D,I*Igain);
+			//printf("new PWM: %.2f      error: %.2f  prev error: %.2f   setpoint: %.2f     current Value: %.2f\n",newPWM,error,prev_error,setpoint,currentValue);
+			prev_error = error;
+	
+	}
+	return;
+}
+
+*/
 std::uint64_t currentTimeMillis() {
     struct timeval currentTime;
     gettimeofday(&currentTime, NULL);
@@ -209,20 +278,8 @@ std::uint64_t currentTimeMicros() {
         (std::uint64_t)(currentTime.tv_usec) / 100000;
 }
 
-float clamp(float v, float lo, float hi){
-	if (v>hi){
-		v = hi;
-		return v;
-		}
-	if (v<lo){
-		v=lo;
-		return v;
-	}
-	return v;
-	
-}
 
-float getSample(int HANDLE) {
+double getSample(int HANDLE) {
 
   if (stop_now) {
     return 0;
@@ -234,7 +291,7 @@ float getSample(int HANDLE) {
     lastSampleTimestamp = now;
   }
 
-  float volts         = readVoltage(HANDLE);
+  double volts         = readVoltage(HANDLE);
   return volts;
 }
 
@@ -245,9 +302,7 @@ int main(int argc, char *argv[])
 	std::string arg1(argv[1]);
 	int frequency = std::stoi(arg1);
 	std::string arg2(argv[2]);
-	int dutyCycle = std::stoi(arg2);
-	std::string arg3(argv[3]);
-	float setpoint = std::stoi(arg3); //the amount of force (in newtons) we are trying to achieve with each cycle.
+	double setpoint = std::stoi(arg2); //the amount of force (in newtons) we are trying to achieve with each cycle.
 	if (gpioInitialise() < 0)
 	{	printf("pigpio initialisation failed \n");}
 	else
@@ -293,26 +348,30 @@ int main(int argc, char *argv[])
   LASER_ADS1115_HANDLE = getADS1115Handle(0x4b);
   
   
-  std::vector <float> loadcellAveraging;
+  std::vector <double> loadcellAveraging;
   
   for (int i=0; i<100; i++){
-	  float data=readVoltageSingleShot(LOADCELL_ADS1115_HANDLE, 1, 0);
+	  double data=readVoltageSingleShot(LOADCELL_ADS1115_HANDLE, 1, 0);
 	  printf("%.3f \n",data);
 	  loadcellAveraging.push_back(data);
   }
-   loadcellRefVoltage = get_vector_average(loadcellAveraging);
+   loadcellRefVoltage = get_vector_median(loadcellAveraging);
+   double loadcellOffset = 2.5 - loadcellRefVoltage;
+   printf("Loadcell Offset: %.3f \n", loadcellOffset);
 	//loadcellRefVoltage = 2.5; //loadcellRefVoltage should be around 2.5. Ideally it is exactly 2.5, but theres usually a small deviation.
 
-  if (doLaserAveraging == 1) {
-  std::vector <float> laserAveraging;
+	
+  std::vector <double> laserAveraging;
   
   for (int i=0; i<100; i++){
-	  float data=readVoltageSingleShot(LASER_ADS1115_HANDLE, 1, 0);
+	  double data=readVoltageSingleShot(LASER_ADS1115_HANDLE, 1, 0);
 	  printf("%.2f\n",data);
 	  laserAveraging.push_back(data);
   }
+  
    laserRefVoltage = get_vector_average(laserAveraging);
-} 
+   double laserOffset = 2.5 - laserRefVoltage;
+ 
 
   sleep(0.25);
   printf("Initial voltage on Load Cell:  %.4f \n",loadcellRefVoltage);
@@ -325,43 +384,44 @@ int main(int argc, char *argv[])
   sleep(0.25);
   
  
-	float cycleCount = 0;
+	double cycleCount = 0;
 
 	
-	double Pgain = 0.1;
-	double Dgain = 0;
-	double Igain = 0.1 ;//gain for control variables
+	 Pgain = 1.1;
+	 Dgain = 0.1;
+	 Igain = 0.125 ;//gain for control variables
 	
-	double P = 0; double D = 0; double I = 0;
 	double prev_error = 0;
-	float feedback = 0;
+	double feedback = 0;
 	double time;
 	double prevtime = 0;
 	unsigned int half_us = (unsigned int) llround(500000.0/frequency);
-	std::thread measureThread(measure,loadcellRefVoltage,LOADCELL_ADS1115_HANDLE,laserRefVoltage,LASER_ADS1115_HANDLE,std::ref(buf), doCycleWriting, std::ref(currentLoadCellCycle),std::ref(currentLaserCycle), std::ref(cycleCount));
+	std::thread measureThread(measure,loadcellRefVoltage,LOADCELL_ADS1115_HANDLE,laserRefVoltage,LASER_ADS1115_HANDLE,std::ref(buf), doCycleWriting, std::ref(currentLoadCellCycle),std::ref(currentLaserCycle), std::ref(cycleCount), loadcellOffset, laserOffset);
 	std::thread serialThread(send,std::ref(buf)); 
 	std::thread receiveThread(receive,std::ref(receivebuffer),std::ref(serial));
+	//std::thread PIDthread(calculatePID,std::ref(currentLoadCellCycle));
+	
 	sampleStart=currentTimeMillis(); //sampleStart is the time at which the experiment starts
 	time = sampleStart; //this time variable will change inside of the PID loop
 
 	int minFrequency = 1; int maxFrequency = 50;
-	float minLoad = 10; float maxLoad = 100;
+	double minLoad = 10; double maxLoad = 100;
 	assert(("Invalid test frequency" && std::stoi(arg1) <= maxFrequency && std::stoi(arg1) >=minFrequency));
-	assert(("Invalid force. Please choose between 0 and 100 newtons." && std::stoi(arg3) <= maxLoad && std::stoi(arg3) >=minLoad));
+	assert(("Invalid force. Please choose between 0 and 100 newtons." && std::stoi(arg2) <= maxLoad && std::stoi(arg2) >=minLoad));
 
 
     
 printf("Beginning test at %.2d Hz\n", frequency);
-gpioSetPWMfrequency(GPIO1,pwmFrequency);
-gpioSetPWMrange(GPIO1,1000);
+gpioSetPWMfrequency(GPIO2,pwmFrequency);
+gpioSetPWMrange(GPIO2,1000);
  while(!stop_now){
 	 
 
 	if (frequency != 0){
 			double newPWM = feedback;
 			
-			gpioPWM(GPIO1,newPWM); 
-			gpioWrite(GPIO2, 0); 
+			gpioPWM(GPIO2,newPWM); 
+			gpioWrite(GPIO1, 0); 
 			cycleCount += 0.5;
 			
 			usleep(half_us);   
@@ -369,9 +429,9 @@ gpioSetPWMrange(GPIO1,1000);
 			time = currentTimeMillis();
 			double dt = currentTimeMillis() - prevtime;
 			prevtime = currentTimeMillis();
-			
-			printf("Cycle # %.f   LOAD CELL: Median of cycle: %.2f N   Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.f \n",cycleCount,get_vector_median(currentLoadCellCycle),get_vector_max(currentLoadCellCycle),get_vector_min(currentLoadCellCycle),newPWM); 
-			printf("LASER: Median of cycle: %.2f    Max of cycle:%.2f  Min of cycle:%.2f",get_vector_median(currentLaserCycle),get_vector_max(currentLaserCycle),get_vector_min(currentLaserCycle)); 
+			printf("Cycle # %.f \n",cycleCount);
+			printf("LOAD CELL: Median of cycle: %.2f N   Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.f \n",get_vector_median(currentLoadCellCycle),get_vector_max(currentLoadCellCycle),get_vector_min(currentLoadCellCycle),newPWM); 
+			printf("LASER: Median of cycle: %.2f    Max of cycle:%.2f  Min of cycle:%.2f \n",get_vector_median(currentLaserCycle),get_vector_max(currentLaserCycle),get_vector_min(currentLaserCycle)); 
 			printf("time: %.2f\n", time-sampleStart);
 			
 			double currentValue = get_vector_max(currentLoadCellCycle); //this is the control variable, the median force over the current cycle
@@ -398,7 +458,6 @@ gpioSetPWMrange(GPIO1,1000);
 			
 			
 			
-			
 			gpioWrite(GPIO1,0);
 			gpioWrite(GPIO2, 0);
 			cycleCount += 0.5;
@@ -415,7 +474,7 @@ abort_test();
 measureThread.join();
 serialThread.join();
 receiveThread.join();
-
+//PIDthread.join();
  return 0; 
 }
 
