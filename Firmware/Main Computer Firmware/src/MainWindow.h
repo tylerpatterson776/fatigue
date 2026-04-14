@@ -2,12 +2,13 @@
 
 #include <limits>
 #include <QMainWindow>
-#include <QtCharts/QChartView>
 #include <QTimer>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include "Sample.h"
 #include "SampleSink.h"
+#include "FrequencyEstimator.h"
+#include "HoverChartView.h"
 
 class QComboBox;
 class QPushButton;
@@ -32,9 +33,10 @@ private slots:
     void onLogTimer() const;
 
 private:
-    void        construct_ui();
-    QChartView* makeChart(const QString& title, const QString& yLabel,
-                          QLineSeries*& series, QValueAxis*& axisX, QValueAxis*& axisY);
+    void             construct_ui();
+    HoverChartView*  makeChart(const QString& title, const QString& yLabel,
+                               QLineSeries*& series, QValueAxis*& axisX, QValueAxis*& axisY,
+                               QLineSeries*& minLine, QLineSeries*& maxLine);
 
     static MainWindow* m_instance;
 
@@ -49,20 +51,29 @@ private:
     bool         m_logging    = false;
 
     // Load chart
-    QLineSeries* m_loadSeries = nullptr;
-    QValueAxis*  m_loadAxisX  = nullptr;
-    QValueAxis*  m_loadAxisY  = nullptr;
+    HoverChartView* m_loadView    = nullptr;
+    QLineSeries*    m_loadSeries  = nullptr;
+    QLineSeries*    m_loadMinLine = nullptr;
+    QLineSeries*    m_loadMaxLine = nullptr;
+    QValueAxis*     m_loadAxisX   = nullptr;
+    QValueAxis*     m_loadAxisY   = nullptr;
+    FrequencyEstimator m_loadEstimator;
 
     // Distance chart
-    QLineSeries* m_distSeries = nullptr;
-    QValueAxis*  m_distAxisX  = nullptr;
-    QValueAxis*  m_distAxisY  = nullptr;
+    HoverChartView* m_distView    = nullptr;
+    QLineSeries*    m_distSeries  = nullptr;
+    QLineSeries*    m_distMinLine = nullptr;
+    QLineSeries*    m_distMaxLine = nullptr;
+    QValueAxis*     m_distAxisX   = nullptr;
+    QValueAxis*     m_distAxisY   = nullptr;
+    FrequencyEstimator m_distEstimator;
 
     // Serial
     SerialWorker* m_worker    = nullptr;
     bool          m_connected = false;
 
-    double m_t0       = -1.0;
+    double m_t0     = -1.0;
+    double m_tStart = -1.0;
     double m_lastLoad = std::numeric_limits<double>::quiet_NaN();
     double m_lastDist = std::numeric_limits<double>::quiet_NaN();
 };

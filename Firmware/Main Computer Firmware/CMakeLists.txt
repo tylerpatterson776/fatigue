@@ -14,6 +14,9 @@ set(SOURCES
     src/Sample.cpp
     src/Sample.h
     src/SampleSink.h
+    src/FrequencyEstimator.h
+    src/HoverChartView.h
+    src/HoverChartView.cpp
 )
 
 find_package(nlohmann_json CONFIG REQUIRED)
@@ -31,7 +34,7 @@ target_link_libraries(fatigue PRIVATE
 if(WIN32)
     add_custom_command(TARGET fatigue POST_BUILD
         COMMAND "${Qt6_DIR}/../../../bin/windeployqt.exe"
-                --release
+                "$<IF:$<CONFIG:Debug>,--debug,--release>"
                 "$<TARGET_FILE:fatigue>"
         COMMENT "Running windeployqt..."
     )

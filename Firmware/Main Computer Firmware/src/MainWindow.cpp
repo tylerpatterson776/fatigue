@@ -49,34 +49,62 @@ MainWindow* MainWindow::instance()
 }
 
 
-// ReSharper disable once CppMemberFunctionMayBeStatic
-QChartView* MainWindow::makeChart(const QString& title, const QString& yLabel,
-                                  QLineSeries*& series, QValueAxis*& axisX, QValueAxis*& axisY)
+static void updateHLine(QLineSeries* line, double y)
 {
-    series = new QLineSeries;
+    line->replace(0, -1e9, y);
+    line->replace(1,  1e9, y);
+}
 
+// ReSharper disable once CppMemberFunctionMayBeStatic
+HoverChartView* MainWindow::makeChart(const QString& title, const QString& yLabel,
+                                      QLineSeries*& series, QValueAxis*& axisX, QValueAxis*& axisY,
+                                      QLineSeries*& minLine, QLineSeries*& maxLine)
+{
     auto* chart = new QChart;
     chart->setTitle(title);
     chart->legend()->hide();
     chart->setAnimationOptions(QChart::NoAnimation);
-    chart->addSeries(series);
 
     axisX = new QValueAxis;
     axisX->setTitleText("Time (s)");
     axisX->setRange(0.0, kWindow);
     axisX->setLabelFormat("%.0f");
     chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
 
     axisY = new QValueAxis;
     axisY->setTitleText(yLabel);
     axisY->setRange(-1.0, 1.0);
     axisY->setLabelFormat("%.2f");
     chart->addAxis(axisY, Qt::AlignLeft);
+
+    // Min/max lines (added first so data series renders on top)
+    QPen redPen(QColor(220, 30, 30, 110));
+    redPen.setWidth(1);
+    redPen.setStyle(Qt::DashLine);
+
+    minLine = new QLineSeries;
+    minLine->setPen(redPen);
+    minLine->append(-1e9, 0);
+    minLine->append( 1e9, 0);
+    chart->addSeries(minLine);
+    minLine->attachAxis(axisX);
+    minLine->attachAxis(axisY);
+
+    maxLine = new QLineSeries;
+    maxLine->setPen(redPen);
+    maxLine->append(-1e9, 0);
+    maxLine->append( 1e9, 0);
+    chart->addSeries(maxLine);
+    maxLine->attachAxis(axisX);
+    maxLine->attachAxis(axisY);
+
+    // Data series
+    series = new QLineSeries;
+    chart->addSeries(series);
+    series->attachAxis(axisX);
     series->attachAxis(axisY);
 
-    series->setUseOpenGL(true);
-    auto* view = new QChartView(chart);
+    auto* view = new HoverChartView(chart);
     view->setRenderHint(QPainter::Antialiasing);
     return view;
 }
@@ -116,13 +144,18 @@ void MainWindow::construct_ui()
     // --- Charts ---
     auto* splitter = new QSplitter(Qt::Vertical);
 
-    auto* loadView = makeChart("Load", "Load (N)",
-                               m_loadSeries, m_loadAxisX, m_loadAxisY);
-    auto* distView = makeChart("Distance", "Distance (mm)",
-                               m_distSeries, m_distAxisX, m_distAxisY);
+    m_loadView = makeChart("Load", "Load (N)",
+                           m_loadSeries, m_loadAxisX, m_loadAxisY,
+                           m_loadMinLine, m_loadMaxLine);
+    m_loadView->setSeries(m_loadSeries);
 
-    splitter->addWidget(loadView);
-    splitter->addWidget(distView);
+    m_distView = makeChart("Distance", "Distance (mm)",
+                           m_distSeries, m_distAxisX, m_distAxisY,
+                           m_distMinLine, m_distMaxLine);
+    m_distView->setSeries(m_distSeries);
+
+    splitter->addWidget(m_loadView);
+    splitter->addWidget(m_distView);
     splitter->setSizes({450, 300});
     root->addWidget(splitter, 1);
 
@@ -157,8 +190,11 @@ void MainWindow::onConnectionChanged(bool connected)
     m_connectBtn->setText(connected ? "Disconnect" : "Connect");
     if (!connected) {
         m_t0       = -1.0;
+        m_tStart   = -1.0;
         m_lastLoad = std::numeric_limits<double>::quiet_NaN();
         m_lastDist = std::numeric_limits<double>::quiet_NaN();
+        m_loadEstimator = FrequencyEstimator{};
+        m_distEstimator = FrequencyEstimator{};
         m_loadSeries->clear();
         m_distSeries->clear();
     }
@@ -172,6 +208,8 @@ void MainWindow::onWorkerError(const QString& msg)
 void MainWindow::onLogToggled()
 {
     if (!m_logging) {
+        m_loadEstimator = FrequencyEstimator{};
+        m_distEstimator = FrequencyEstimator{};
         const QString ts = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss");
         const QString filename = QString("fatigue_%1.csv").arg(ts);
         m_sinks.push_back(std::make_unique<CSVFileSink>(filename));
@@ -194,14 +232,36 @@ void MainWindow::onLogTimer() const
 
 void MainWindow::onSample(Sample s)
 {
+    static uint32_t sample_count = 0;
+    ++sample_count;
+
+    constexpr uint32_t sample_division_factor = 3;
+    if (sample_count % sample_division_factor != 0)
+        return;
+
     if (m_logging)
         for (const auto& sink : m_sinks)
             sink->handle(s);
 
     const double t = s.timestamp_ms / 1000.0;
-    if (m_t0 < 0.0) m_t0 = t;
-    const double x = t - m_t0;
+    if (m_t0 < 0.0)     m_t0     = t;
+    if (m_tStart < 0.0) m_tStart = t;
 
+    const auto t_rel = static_cast<float>(t - m_tStart);
+    const auto loadResult = m_loadEstimator.update(t_rel, static_cast<float>(s.load_n));
+    const auto distResult = m_distEstimator.update(t_rel, static_cast<float>(s.distance_mm));
+
+    m_loadView->updateStats(loadResult.frequency_hz, loadResult.avg_max, loadResult.avg_min);
+    m_distView->updateStats(distResult.frequency_hz, distResult.avg_max, distResult.avg_min);
+    updateHLine(m_loadMinLine, loadResult.avg_min);
+    updateHLine(m_loadMaxLine, loadResult.avg_max);
+    updateHLine(m_distMinLine, distResult.avg_min);
+    updateHLine(m_distMaxLine, distResult.avg_max);
+
+    // Freeze chart data while mouse is over either chart.
+    if (m_loadView->isPaused() || m_distView->isPaused()) return;
+
+    const double x = t - m_t0;
     if (x >= kWindow) {
         m_t0 = t;
         m_loadSeries->clear();
@@ -211,8 +271,8 @@ void MainWindow::onSample(Sample s)
         return;
     }
 
-    constexpr double kLoadThresh = 0.5;   // N
-    constexpr double kDistThresh = 0.0001;  // mm
+    constexpr double kLoadThresh = 0.1;    // N
+    constexpr double kDistThresh = 0.00001; // mm
 
     const bool loadChanged = std::isnan(m_lastLoad) || std::abs(s.load_n      - m_lastLoad) > kLoadThresh;
     const bool distChanged = std::isnan(m_lastDist) || std::abs(s.distance_mm - m_lastDist) > kDistThresh;
