@@ -1,3 +1,4 @@
+
 #include <pigpio.h>
 #include <nlohmann/json.hpp>
 #include <stdio.h>
@@ -37,9 +38,10 @@
 
 using json = nlohmann::json;
 
-#define GPIO1 18
-#define GPIO2 27
-#define GPIO3 17
+#define GPIO1 27
+#define GPIO2 17
+#define GPIO3 22
+#define GPIO4 23
 
 const float lbsPerVolt = 10; //change this is load cell is recalibrated
 const float newtonsPerVolt = 44.48; //change this is load cell is recalibrated
@@ -50,7 +52,7 @@ std::uint64_t currentTimeMillis();
 
 
 const int LOADCELL_ADS1115_ADDRESS=0x48;
-const int LASER_ADS1115_ADDRESS=0x49;
+const int LASER_ADS1115_ADDRESS=0x4b;
 int LOADCELL_ADS1115_HANDLE;
 int LASER_ADS1115_HANDLE;
 
@@ -63,10 +65,6 @@ float vRef = 5.0;
 int   gain = 0;
 int serial;
 
-int maxNewPWM = 1000000;
-int minNewPWM = 400000;
-int maxPWM = 1000;
-int minPWM = 0;
   
 const int laserStopDistance = 5; 
 const int minFrequency = 0;const int maxFrequency = 50;
@@ -79,7 +77,7 @@ float laserRefVoltage;
 
 
 float voltsToPounds(float input, float reference, float conversionFactor = lbsPerVolt){ float result = (input - reference)*conversionFactor; return result;} //the *2 is to account for the fact we are voltage dividing 
-float voltsToNewtons(float input, float reference, float conversionFactor = newtonsPerVolt){ float result = (input - reference)*conversionFactor; return result;}
+float voltsToNewtons(float input, float reference, float conversionFactor = newtonsPerVolt){ float result = -((input - reference)*conversionFactor); return result;}
 float voltsToKg(float input, float reference, float conversionFactor = kgPerVolt){ float result = (input - reference)*conversionFactor; return result;}
 float voltsToMM(float input, float reference, float conversionFactor = mmPerVolt){ float result = (input - reference)*conversionFactor; return result;}
 float getSample(int HANDLE);
@@ -121,6 +119,8 @@ int abort_test(void){
 	close(serial);
     gpioWrite(GPIO1,0); 
     gpioWrite(GPIO2,0);
+    gpioWrite(GPIO3,0);
+    gpioWrite(GPIO4,0);
     gpioTerminate(); 
     exit(0);
 }
@@ -241,10 +241,11 @@ float getSample(int HANDLE) {
 
 int main(int argc, char *argv[])
 {
-
-	int pwmFreq = 8000;
+	gpioCfgClock(1,1,0);
+	int pwmFreq = 23000;
 	std::string arg1(argv[1]);
 	std::string arg2(argv[2]);
+	int dutyCycle = std::stoi(arg2);
 	if (gpioInitialise() < 0)
 	{	printf("pigpio initialisation failed \n");}
 	else
@@ -253,8 +254,11 @@ int main(int argc, char *argv[])
 	signal(SIGINT, sigint_handler);
     gpioSetMode(GPIO1, PI_OUTPUT); 
     gpioSetMode(GPIO2, PI_OUTPUT);
-    gpioSetPWMfrequency(GPIO1, pwmFreq);
-    gpioSetPWMfrequency(GPIO2, pwmFreq);
+    gpioSetMode(GPIO3, PI_OUTPUT); 
+    gpioSetMode(GPIO4, PI_OUTPUT);
+    
+    gpioWrite(GPIO3, 1);
+    gpioWrite(GPIO4, 1);
   
 
 
@@ -276,27 +280,27 @@ int main(int argc, char *argv[])
   AdcBuf buf;
   Serialbuf receivebuffer;
   
-  LOADCELL_ADS1115_HANDLE = wiringPiI2CSetup(LOADCELL_ADS1115_ADDRESS);
+  LOADCELL_ADS1115_HANDLE = getADS1115Handle(0x48);
   sleep(0.1);
-  LASER_ADS1115_HANDLE = wiringPiI2CSetup(LASER_ADS1115_ADDRESS);
+  LASER_ADS1115_HANDLE = getADS1115Handle(0x4b);
   
   
-  if (doLoadcellAveraging == 1) {
   std::vector <float> loadcellAveraging;
   
-  for (int i=0; i<500; i++){
-	  float data=readVoltageSingleShot(LOADCELL_ADS1115_HANDLE, 3, 0);
+  for (int i=0; i<100; i++){
+	  float data=readVoltageSingleShot(LOADCELL_ADS1115_HANDLE, 1, 0);
+	  printf("%.3f \n",data);
 	  loadcellAveraging.push_back(data);
   }
    loadcellRefVoltage = get_vector_average(loadcellAveraging);
-} else { loadcellRefVoltage = 2.5;}
+	//loadcellRefVoltage = 2.5;
 
   if (doLaserAveraging == 1) {
   std::vector <float> laserAveraging;
   
   for (int i=0; i<100; i++){
-	  float data=readVoltageSingleShot(LASER_ADS1115_HANDLE, 0, 0);
-	  //printf("%.2f\n",data);
+	  float data=readVoltageSingleShot(LASER_ADS1115_HANDLE, 1, 0);
+	  printf("%.2f\n",data);
 	  laserAveraging.push_back(data);
   }
    laserRefVoltage = get_vector_average(laserAveraging);
@@ -308,109 +312,56 @@ int main(int argc, char *argv[])
   
   printf("Initial voltage on Laser:  %.4f \n",laserRefVoltage);
   printf("accessing ads1115 chip on i2c address 0x%02x\n", LASER_ADS1115_ADDRESS );
-  setADS1115ContinuousMode(LOADCELL_ADS1115_HANDLE, 3, 0, 7);
-  setADS1115ContinuousMode(LASER_ADS1115_HANDLE, 0, 0, 7);
+  setADS1115ContinuousMode(LOADCELL_ADS1115_HANDLE, 1, 0, 7);
+  setADS1115ContinuousMode(LASER_ADS1115_HANDLE, 1, 0, 7);
   sleep(0.25);
   
   
 	int frequency = std::stoi(arg1);
-	float PWM = 30; //out of 1000
-	float desiredForce = std::stoi(arg2);//in newtons
-	float setpoint = desiredForce;
-	float Pgain = 4;
-	float Dgain = 0;
-	double Igain = 1;
 	float cycleCount = 0;
 	
-	double I = 0;
-	double D = 0;
-	double P = 0;
-	double dt;
+
 	double time;
-	double prevtime;
-	double slope = 1.0 * (maxNewPWM - minNewPWM) / (maxPWM - minPWM);
-	int newPWM = minNewPWM + round(slope*(PWM - minPWM));
 	unsigned int half_us = (unsigned int) llround(500000.0/frequency);
-	float prev_error = 0;
 	std::thread measureThread(measure,loadcellRefVoltage,LOADCELL_ADS1115_HANDLE,laserRefVoltage,LASER_ADS1115_HANDLE,std::ref(buf), doCycleWriting, std::ref(currentLoadCellCycle),std::ref(currentLaserCycle), std::ref(cycleCount));
 	std::thread serialThread(send,std::ref(buf)); 
 	std::thread receiveThread(receive,std::ref(receivebuffer),std::ref(serial));
   sampleStart=currentTimeMillis();
 
 
-float maxLoad = 100.0;
-float minLoad = 0.0;
 
 assert(("Invalid test frequency" && std::stoi(arg1) <= maxFrequency && std::stoi(arg1) >=minFrequency));
-assert(("Invalid force. Please choose between 0 and 100 newtons." && std::stoi(arg2) <= maxLoad && std::stoi(arg2) >=minLoad));
 
 time = currentTimeMillis();
-prevtime = time;
-if (desiredForce > 40){
-	desiredForce = 40;
-}
+
     
-printf("Beginning test at %.2d Hz and %.3d PWM \n", frequency, newPWM);
+printf("Beginning test at %.2d Hz\n", frequency);
+gpioSetPWMfrequency(GPIO1,20000);
+gpioSetPWMrange(GPIO1,100);
  while(!stop_now){
 	 
-	 if (desiredForce < setpoint){ //this slowly ramps up the force to prevent a current dump on startup 
-		 desiredForce += 0.5;
-		}
-	if (frequency != 0){
 
-			gpioHardwarePWM(GPIO1,40000 ,newPWM); //C
-			gpioWrite(GPIO2, 1); //Ven
-			gpioWrite(GPIO3,0); //D
+	if (frequency != 0){
+			int newPWM = dutyCycle;
+			gpioPWM(GPIO1,newPWM); //C
+			gpioWrite(GPIO2, 0); //Ven
 			cycleCount += 0.5;
 			//run a thing here that collects until cycle is over
 			usleep(half_us);   
-			//printf("%.2ld", currentCycle.size());
-			//doCycleWriting = 0;
 			time = currentTimeMillis();
-			dt = currentTimeMillis() - prevtime;
-			prevtime = currentTimeMillis();
-			printf("Cycle # %.f   LOAD CELL: Median of cycle: %.2f N   Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.d           \n",cycleCount,get_vector_median(currentLoadCellCycle),get_vector_max(currentLoadCellCycle),get_vector_min(currentLoadCellCycle),newPWM); 
+			printf("Cycle # %.f   LOAD CELL: Median of cycle: %.2f N   Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.d \n",cycleCount,get_vector_median(currentLoadCellCycle),get_vector_max(currentLoadCellCycle),get_vector_min(currentLoadCellCycle),dutyCycle); 
 			//printf("LASER: Median of cycle: %.2f    Max of cycle:%.2f  Min of cycle:%.2f   PWM: %.d\n",get_vector_median(currentLaserCycle),get_vector_max(currentLaserCycle),get_vector_min(currentLaserCycle),newPWM); 
-			printf("time: %.2f, dt: %.2f\n", time-sampleStart,dt);
-			float currentValue = get_vector_median(currentLoadCellCycle);
-			float error = desiredForce - currentValue;
-			
-			P = error*Pgain;
-			if (cycleCount > 3) {
-				D = (((error - prev_error)/dt)*Dgain);
-				I += (error*dt*0.01);
-			}
-			
-			
-			//float feedback =   clamp((desiredForce)*5.5 + P + D + I*Igain, 0, 900);
-			float feedback =   clamp(P + D + I*Igain, 0, 900);
-			printf("Feedback : %.8f,  P: %.8f,  D: %.8f,  Iout:%.8f\n", feedback,P,D,I*Igain);
-			newPWM = clamp(minNewPWM + round(slope*(feedback - minPWM)),minNewPWM,900000);
-			printf("new PWM: %.2d      error: %.2f  prev error: %.2f   desired Force: %.2f     current Value: %.2f\n",newPWM,error,prev_error,desiredForce,currentValue);
-			prev_error = error;
-			
-			
-			
-			
+			printf("time: %.2f\n", time-sampleStart);
 			
 			gpioWrite(GPIO1,0);
-			gpioWrite(GPIO2, 1);
-			gpioWrite(GPIO3,0);
+			gpioWrite(GPIO2, 0);
 			cycleCount += 0.5;
 			usleep(half_us);        
 			currentLoadCellCycle.clear(); 
 			currentLaserCycle.clear();
-			  // low for half period
-			//printf("Pushing begins now\n");
-			
     
 }
 
-	/*
-	if (serialDataAvail (serial)){
-	printf(" %3d", serialGetchar (serial));
-	}
-	*/
 }
 
 
@@ -423,16 +374,3 @@ receiveThread.join();
 }
 
   
-  
-
-// o = operation mode
-// x = mux
-// g = gain
-// m = mode
-//                oxxx gggm
-// default 0x8583 1000 0101 1000 0011
-//                1111 0101 1000 0011
-//                1111 0101 1000 0011
-
-
-    
