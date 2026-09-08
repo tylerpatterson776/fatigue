@@ -1,157 +1,120 @@
 #pragma once
 #include <array>
-#include <atomic>
+#include <mutex>
+#include <condition_variable>
+#include <stdexcept>
+#include <cstdint>
 #include <optional>
 #include <sstream>
-#include <thread>
-#include <nlohmann/json.hpp>
+#include <utility>
 #include <string>
-using json = nlohmann::json;
 
-enum class ADC: std::uint16_t
+enum class ADC : std::uint16_t
 {
-ADC1,
-ADC2,
+    ADC1,
+    ADC2,
 };
 
 struct Sample
 {
-std::string packet;
+    std::string packet;
 
-
-[[nodiscard]] std::string to_string() const
-{
-std::stringstream ss;
-ss <<  packet<<"\n";
-return ss.str();
-
-}
-
+    [[nodiscard]] std::string to_string() const
+    {
+        std::stringstream ss;
+        ss << packet << "\n";
+        return ss.str();
+    }
 };
 
-template<typename T, size_t N>
-class RingBuf
+template <typename T, size_t N> class RingBuf
 {
 public:
-RingBuf() : m_mask(N - 1), m_head(0), m_tail(0)
-{
-static_assert((N & (N - 1)) == 0, "RingBuf size must be a power of 2");
-//static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
-//static_assert(std::is_trivially_constructible_v<T>, "T must be trivially constructible");
-}
+    RingBuf() : m_head(0), m_tail(0), m_size(0), m_closed(false)
+    {
+        static_assert(N > 0 && (N & (N - 1)) == 0, "RingBuf size must be a power of 2");
+    }
 
-void push(const T& value) noexcept
-{
-size_t head = m_head.load(std::memory_order_relaxed);
-size_t tail = m_tail.load(std::memory_order_acquire);
+    bool push(const T& value)
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_closed || m_size == N)
+            return false;
+        m_buffer[m_head] = value;
+        m_head = (m_head + 1) & (N - 1);
+        ++m_size;
+        m_ready.notify_one();
+        return true;
+    }
 
-if (head - tail >= N) {
-// drop oldest by advancing tail.
-m_tail.fetch_add(1, std::memory_order_release);
-tail += 1;
-}
+    std::optional<T> pop_nowait()
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_size == 0)
+            return std::nullopt;
+        return take();
+    }
 
-const size_t index = head & m_mask;
-m_buffer[index] = value; // write the element first
-m_head.store(head + 1, std::memory_order_release); // then publish
-}
+    std::optional<T> wait_pop()
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        m_ready.wait(lock, [this] { return m_closed || m_size != 0; });
+        if (m_size == 0)
+            return std::nullopt;
+        return take();
+    }
 
-std::optional<T> pop_nowait() noexcept
-{
-size_t tail = m_tail.load(std::memory_order_relaxed);
-size_t head = m_head.load(std::memory_order_acquire);
+    T pop(const bool = false)
+    {
+        auto value = wait_pop();
+        if (!value)
+            throw std::runtime_error("RingBuf is closed");
+        return std::move(*value);
+    }
 
-if (tail == head) {
-return std::nullopt; // empty
-}
+    void close()
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_closed = true;
+        m_ready.notify_all();
+    }
 
-const size_t index = tail & m_mask;
-T value = m_buffer[index];
+    bool empty() const
+    {
+        return size() == 0;
+    }
 
-m_tail.fetch_add(1, std::memory_order_release);
+    bool full() const
+    {
+        return size() == N;
+    }
 
-return value;
-}
-
-T pop(const bool spin = false) noexcept
-{
-for (;;) {
-if (auto v = pop_nowait()) return *v;
-if (!spin) std::this_thread::yield();
-}
-}
-
-bool empty() const noexcept
-{
-const size_t head = m_head.load(std::memory_order_acquire);
-const size_t tail = m_tail.load(std::memory_order_acquire);
-return head == tail;
-}
-
-bool full() const noexcept
-{
-const size_t head = m_head.load(std::memory_order_acquire);
-const size_t tail = m_tail.load(std::memory_order_acquire);
-return (head - tail) >= N;
-}
-
-size_t size() const noexcept
-{
-const size_t head = m_head.load(std::memory_order_acquire);
-const size_t tail = m_tail.load(std::memory_order_acquire);
-return head - tail;
-}
+    size_t size() const
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_size;
+    }
 
 private:
-std::array<T, N> m_buffer;
-const size_t m_mask;
+    T take()
+    {
+        T value = std::move(m_buffer[m_tail]);
+        m_tail = (m_tail + 1) & (N - 1);
+        --m_size;
+        return value;
+    }
 
-alignas(64) std::atomic<size_t> m_head;
-alignas(64) std::atomic<size_t> m_tail;
+    std::array<T, N> m_buffer;
+    size_t m_head;
+    size_t m_tail;
+    size_t m_size;
+    bool m_closed;
+    mutable std::mutex m_mutex;
+    std::condition_variable m_ready;
 };
 
+typedef RingBuf<Sample, 2048> AdcBuf;
 
-typedef RingBuf<Sample, 128>
- AdcBuf;
- 
- 
-typedef RingBuf<int, 512>
- Serialbuf;
- 
-typedef RingBuf<float,4>
- MiniBuf;
+typedef RingBuf<int, 512> Serialbuf;
 
-
-
-/*
-
-int main() {
-AdcBuf buf;
-std::atomic_bool done = false;
-
-std::thread consumer([&]
-{
-while (!done || !buf.empty())
-{
-const auto sample = buf.pop(true);
-// Write to serial or whatever.
-}
-});
-
-std::thread producer([&]
-{
-for (int i = 0; i < 5000; ++i)
-{
-buf.push(Sample{
-i % 2 == 0 ? ADC::ADC1 : ADC::ADC2, (uint16_t)i, (uint32_t)i
-});
-}
-done = true;
-});
-
-consumer.join();
-producer.join();
-
-return 0;
-}
-*/
+typedef RingBuf<float, 4> MiniBuf;

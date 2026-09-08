@@ -3,22 +3,19 @@
 #include <QtCharts/QChart>
 #include <limits>
 
-HoverChartView::HoverChartView(QChart* chart, QWidget* parent)
-    : QChartView(chart, parent)
+HoverChartView::HoverChartView(QChart* chart, QWidget* parent) : QChartView(chart, parent)
 {
     setMouseTracking(true);
 
     m_tooltip = new QLabel(this);
-    m_tooltip->setStyleSheet(
-        "background: rgba(0,0,0,160); color: white; "
-        "padding: 4px 6px; border-radius: 3px; font-family: monospace;");
+    m_tooltip->setStyleSheet("background: rgba(0,0,0,160); color: white; "
+                             "padding: 4px 6px; border-radius: 3px; font-family: monospace;");
     m_tooltip->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_tooltip->hide();
 
     m_stats = new QLabel(this);
-    m_stats->setStyleSheet(
-        "color: white; background: rgba(0,0,0,120); "
-        "padding: 4px 6px; border-radius: 3px; font-family: monospace;");
+    m_stats->setStyleSheet("color: white; background: rgba(0,0,0,120); "
+                           "padding: 4px 6px; border-radius: 3px; font-family: monospace;");
     m_stats->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_stats->setText("f: -- Hz\nmax: --\nmin: --");
     m_stats->adjustSize();
@@ -60,10 +57,7 @@ void HoverChartView::mouseMoveEvent(QMouseEvent* event)
         }
     }
 
-    m_tooltip->setText(
-        QString("t: %1 s\ny: %2")
-            .arg(cursorX, 0, 'f', 3)
-            .arg(closestY, 0, 'f', 4));
+    m_tooltip->setText(QString("t: %1 s\ny: %2").arg(cursorX, 0, 'f', 3).arg(closestY, 0, 'f', 4));
     m_tooltip->adjustSize();
 
     int tx = event->pos().x() + 14;
@@ -80,10 +74,9 @@ void HoverChartView::mouseMoveEvent(QMouseEvent* event)
 
 void HoverChartView::updateStats(float freq_hz, float avg_max, float avg_min)
 {
-    m_stats->setText(
-        QString("f: %1 Hz\nmax: %2\nmin: %3")
-            .arg(static_cast<double>(freq_hz), 0, 'f', 2)
-            .arg(static_cast<double>(avg_max), 0, 'f', 3)
-            .arg(static_cast<double>(avg_min), 0, 'f', 3));
+    m_stats->setText(QString("f: %1 Hz\nmax: %2\nmin: %3")
+                         .arg(static_cast<double>(freq_hz), 0, 'f', 2)
+                         .arg(static_cast<double>(avg_max), 0, 'f', 3)
+                         .arg(static_cast<double>(avg_min), 0, 'f', 3));
     m_stats->adjustSize();
 }
